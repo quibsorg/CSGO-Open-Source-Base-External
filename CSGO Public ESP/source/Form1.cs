@@ -621,16 +621,12 @@ namespace DirectOverlay
                     
                     if (ent == 0 || ent == LocalPlayer)
                         continue;
-                    _ShadowText("" + ent, new Point(0, 30 + (i * 15)), Color.DeepSkyBlue);
                     int entHealth = _m.rdInt(ent + hOff);
                     if (entHealth == 0)
                         continue;
-                    _ShadowText("" + entHealth, new Point(100, 30 + (i * 15)), Color.DeepSkyBlue);
                     int entTeam = _m.rdInt(ent + teamoff);
-                    _ShadowText("" + entTeam, new Point(130, 30 + (i * 15)), Color.DeepSkyBlue);
                     _vec3 entPos = GetentPosition(i);
                     _vec3 test = new _vec3();
-                    _ShadowText("" + entPos.x+" "+entPos.y+" "+entPos.z, new Point(150, 30 + (i * 15)), Color.DeepSkyBlue);
 
                     //Draw them on the Radar
                     EnemyPosToRadar(entPos, ent);
@@ -670,10 +666,6 @@ namespace DirectOverlay
 
                             }
                         }
-                    }
-                    else
-                    {
-                        _ShadowText("Fuck", new Point(500, 30 + (i * 15)), Color.Red);
                     }
                     
                 }
