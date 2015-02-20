@@ -303,6 +303,7 @@ namespace DirectOverlay
         const int hOff = 0xFC;
         const int boneMatrix = 0xA78;
         const int eLoopAmt = 0x10;
+        const int pAngs = 0x13DC;
         int _client;
         [DllImport("user32.dll")]
         static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
@@ -590,8 +591,23 @@ namespace DirectOverlay
                 int LocalPlayerHealth = _m.rdInt(LocalPlayer + hOff);
                 int LocalTeam = _m.rdInt(LocalPlayer + teamoff);
                 _vec3 playerPos = GetPlayerPosition();
+		//Recoil crosshair, fuck toggles
+		if (GetAsyncKeyState(0x001) != 0)
+                {
+                    _vec3 punchAngs = _m.rdVector(LocalPlayer + pAngs);
+                    int crX = this.Width / 2, crY = this.Height / 2;
+                    int dy = this.Height / 90;
+                    int dx = this.Width / 90;
 
+                    int drX = crX - (int)(dx * (punchAngs.y)) + fuckingshitoffsetfuck;
+                    int drY = crY + (int)(dy * (punchAngs.x)) + fuckingshitoffsetfuck;
 
+                    DrawLine(drX - 6, drY, drX + 6, drY, 1, Color.Red);
+                    DrawLine(drX, drY - 6, drX, drY + 6, 1, Color.Red);
+                }
+		
+		
+		//Draw the radar
                 DrawRadar();
                 //ViewMatrix Read
                 //Mind you this is terribly inefficient
