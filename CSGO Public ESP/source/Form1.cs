@@ -480,7 +480,7 @@ namespace DirectOverlay
 
         #endregion
 
-        int EnemyPosToRadar(_vec3 pos, int player)
+        int EnemyPosToRadar(_vec3 pos, int player, int yOff)
         {
             float r_1, r_2;
             float x_1, y_1;
@@ -526,7 +526,7 @@ namespace DirectOverlay
             /* Clamps */
 
             /* Colors the box in relation to their team #*/
-
+            y_1 += yOff;
             int enemyTeam = _m.rdInt(player + teamoff);
             int localTeam = _m.rdInt(GetLocalPlayer() + teamoff);
             if (enemyTeam == localTeam)
@@ -604,16 +604,18 @@ namespace DirectOverlay
 
 
                 //Draw the radar
+               
                 int yOff = this.Height - 600-200;
                 DrawGUIBox(25, yOff + 501, 200, 200, 255, 255, 255, 200, 0, 0, 0, 0);
-                GradientFunc(25, yOff + 500, 200, 200, 10, 10, 80, 250);
-
-                DrawLine(25, yOff + 500, 125, yOff + 600, 100, 100, 100, 255);
-                DrawLine(225, yOff + 500, 125, yOff + 600, 100, 100, 100, 255);
-                DrawLine(125, yOff + 600, 125, yOff + 700, 100, 100, 100, 255);
-                DrawLine(25, yOff + 600, 225, yOff + 600, 100, 100, 100, 255);
+                //GradientFunc(25, yOff + 500, 200, 200, 10, 10, 80, 250);
+                FillRGB(25, yOff + 500, 200, 200, 90, 90, 90, 255);
+                DrawLine(25, yOff + 500, 125, yOff + 600, 150, 150, 150, 255);
+                DrawLine(225, yOff + 500, 125, yOff + 600, 150, 150, 150, 255);
+                DrawLine(125, yOff + 600, 125, yOff + 700, 150, 150, 150, 255);
+                DrawLine(25, yOff + 600, 225, yOff + 600, 150, 150, 150, 255);
 
                 FillRGB(124, yOff + 600, 3, 3, 255, 255, 255, 255);
+                
                 //ViewMatrix Read
                 //Mind you this is terribly inefficient
                 for (int j = 0; j < 16; j++)
@@ -634,7 +636,7 @@ namespace DirectOverlay
                     _vec3 test = new _vec3();
 
                     //Draw them on the Radar
-                    EnemyPosToRadar(entPos, ent);
+                    EnemyPosToRadar(entPos, ent, yOff);
                     //Radar Done
 
                     if (w2scn(entPos, test))
@@ -650,7 +652,6 @@ namespace DirectOverlay
                         {
                             col = Color.Green;
                         }
-                        _ShadowText("" + pos.X + " " + pos.Y, new Point(pos.X, pos.Y), col);
                         if (esp)
                         {
                             _ShadowText("" + entHealth, pos, col);
