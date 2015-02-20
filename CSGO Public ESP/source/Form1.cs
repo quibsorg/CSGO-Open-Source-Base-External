@@ -101,7 +101,7 @@ namespace DirectOverlay
 
             //Set the Alpha on the Whole Window to 255 (solid)
             SetLayeredWindowAttributes(this.Handle, 0, 255, LWA_ALPHA);
-            
+
             //Init DirectX
             //This initializes the DirectX device. It needs to be done once.
             //The alpha channel in the backbuffer is critical.
@@ -147,7 +147,7 @@ namespace DirectOverlay
         {
             return x * (float)(Math.PI / 180.0F);
         }
-    
+
 
         public static void DrawLine(float x1, float y1, float x2, float y2, float w, Color Color)
         {
@@ -161,26 +161,26 @@ namespace DirectOverlay
         }
         void Circle(int X, int Y, int radius, int numSides, Color Color)
         {
-	        float Step = (float)(Math.PI * 2.0 / numSides);
-	        int Count = 0;
-	        for (float a=0; a < Math.PI*2.0; a += Step)
-	        {
-		        float X1 = (float)(radius * Math.Cos(a) + X);
-		        float Y1 = (float)(radius * Math.Sin(a) + Y);
+            float Step = (float)(Math.PI * 2.0 / numSides);
+            int Count = 0;
+            for (float a = 0; a < Math.PI * 2.0; a += Step)
+            {
+                float X1 = (float)(radius * Math.Cos(a) + X);
+                float Y1 = (float)(radius * Math.Sin(a) + Y);
                 float X2 = (float)(radius * Math.Cos(a + Step) + X);
                 float Y2 = (float)(radius * Math.Sin(a + Step) + Y);
-                if (Count!=0)
+                if (Count != 0)
                 {
                     DrawLine(X1, Y1, X2, Y2, 1, Color);
                     //_ShadowText("Count: " + Count /*+ " Coords: " + X1 + ", " + Y1 + ", " + X2 + ", " + Y2*/, new Point((int)X1, (int)Y1), Color.Red);
                     //MessageBox.Show("Count: " + Count + " Coords: " + X1 + ", " + Y1 + ", " + X2 + ", " + Y2);
                 }
-		        Count += 2;
-	        }
+                Count += 2;
+            }
         }
         static Color SetTransparency(int A, Color color)
         {
-            return Color.FromArgb(A, color.R, color.G, color.B);    
+            return Color.FromArgb(A, color.R, color.G, color.B);
         }
 
         public static void DrawFilledBox(float x, float y, float w, float h, System.Drawing.Color Color)
@@ -201,7 +201,7 @@ namespace DirectOverlay
             line.End();
         }
 
-        public static void DrawTransparentBox(float x, float y, float w, float h, int transparency,System.Drawing.Color Color)
+        public static void DrawTransparentBox(float x, float y, float w, float h, int transparency, System.Drawing.Color Color)
         {
             Vector2[] vLine = new Vector2[2];
 
@@ -247,7 +247,7 @@ namespace DirectOverlay
             }
         }
 
-        
+
         double Distance(_vec3 point1, _vec3 point2)
         {
             double distance = Math.Sqrt(((int)point1.x - (int)point2.x) * ((int)point1.x - (int)point2.x) +
@@ -333,7 +333,7 @@ namespace DirectOverlay
             int LocalPlayer = _m.rdInt(_client + pBaseOff);
 
             return _m.rdVector(LocalPlayer + 0x239C);
-        
+
         }
 
 
@@ -385,7 +385,7 @@ namespace DirectOverlay
             else
                 return CallNextHookEx(hhook, code, (int)wParam, lParam);
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             SetHook();
@@ -396,7 +396,7 @@ namespace DirectOverlay
             UnHook();
             this.device.Dispose();
         }
-        
+
         [DllImport("user32.dll")]
         static extern short GetAsyncKeyState(int vKey);
 
@@ -478,20 +478,6 @@ namespace DirectOverlay
             FillRGB(x, y, w, h, rr, gg, bb, a);        // Body color 
         }
 
-
-        int DrawRadar()
-        {
-            DrawGUIBox(25, 501, 200, 200, 255, 255, 255, 200, 0, 0, 0, 0);
-            GradientFunc(25, 500, 200, 200, 10, 10, 80, 250);
-
-            DrawLine(25, 500, 125, 600, 100, 100, 100, 255);
-            DrawLine(225, 500, 125, 600, 100, 100, 100, 255);
-            DrawLine(125, 600, 125, 700, 100, 100, 100, 255);
-            DrawLine(25, 600, 225, 600, 100, 100, 100, 255);
-
-            FillRGB(124, 600, 3, 3, 255, 255, 255, 255);
-            return 0;
-        }
         #endregion
 
         int EnemyPosToRadar(_vec3 pos, int player)
@@ -503,71 +489,81 @@ namespace DirectOverlay
             LocalPlayerPos = _m.rdVector(GetLocalPlayer() + PosOffset);
 
             r_1 = -(pos.y - LocalPlayerPos.y); //Get the player's position in relation to my own, being as I'm the center of the radar.
-			r_2 = pos.x - LocalPlayerPos.x;
+            r_2 = pos.x - LocalPlayerPos.x;
 
             _vec3 eyeAngles = GetEyeAngles();
-			float Yaw = eyeAngles.y - 90.0f;
+            float Yaw = eyeAngles.y - 90.0f;
 
-           float yawToRadian = D3DXToRadian(Yaw);
-			x_1 = (float)(r_2 * (float)Math.Cos((double)(yawToRadian)) - r_1 * Math.Sin((double)(yawToRadian))) / 20; // Try to calculate their X & Y on the radar, using their position relative to me, and also taking my yaw into account
-			y_1 = (float)(r_2 * (float)Math.Sin((double)(yawToRadian)) + r_1 * Math.Cos((double)(yawToRadian))) / 20;
+            float yawToRadian = D3DXToRadian(Yaw);
+            x_1 = (float)(r_2 * (float)Math.Cos((double)(yawToRadian)) - r_1 * Math.Sin((double)(yawToRadian))) / 20; // Try to calculate their X & Y on the radar, using their position relative to me, and also taking my yaw into account
+            y_1 = (float)(r_2 * (float)Math.Sin((double)(yawToRadian)) + r_1 * Math.Cos((double)(yawToRadian))) / 20;
 
-			//x_1 *= 2;
-			x_1 += 123; // this adds half the width of the radar to the x pos
+            //x_1 *= 2;
+            x_1 += 123; // this adds half the width of the radar to the x pos
 
-			y_1 += 599; // + half height.
+            y_1 += 599; // + half height.
 
-			//Draws this code so I can see the numbers incase they're just retarded
+            //Draws this code so I can see the numbers incase they're just retarded
 
-			/* Clamps */
-			if (x_1 < 25){
-				x_1 = 25;
-			}
-			if (x_1 > 220){
-				x_1 = 220;
-			}
+            /* Clamps */
+            if (x_1 < 25)
+            {
+                x_1 = 25;
+            }
+            if (x_1 > 220)
+            {
+                x_1 = 220;
+            }
 
-			if (y_1 > 697){
-				y_1 = 697;
-			}
-			if (y_1 < 502){
-				y_1 = 502;
-			}
-			/* Clamps */
+            if (y_1 > 697)
+            {
+                y_1 = 697;
+            }
+            if (y_1 < 502)
+            {
+                y_1 = 502;
+            }
+            /* Clamps */
 
-			/* Colors the box in relation to their team #*/
+            /* Colors the box in relation to their team #*/
 
             int enemyTeam = _m.rdInt(player + teamoff);
             int localTeam = _m.rdInt(GetLocalPlayer() + teamoff);
-			if (enemyTeam == localTeam)
-			{
-				if (pos.z - LocalPlayerPos.z > 75){
-					FillRGB(x_1, y_1, 5, 5, 255, 0, 255, 255); // Purple
-				}
-				else if (pos.z - LocalPlayerPos.z < -75){
-					FillRGB(x_1, y_1, 5, 5, 7, 223, 255, 255);// Light Blue
-				}
-				else{
-					FillRGB(x_1, y_1, 5, 5, 0, 255, 0, 255);// Green
-				}
-			}
+            if (enemyTeam == localTeam)
+            {
+                if (pos.z - LocalPlayerPos.z > 75)
+                {
+                    FillRGB(x_1, y_1, 5, 5, 255, 0, 255, 255); // Purple
+                }
+                else if (pos.z - LocalPlayerPos.z < -75)
+                {
+                    FillRGB(x_1, y_1, 5, 5, 7, 223, 255, 255);// Light Blue
+                }
+                else
+                {
+                    FillRGB(x_1, y_1, 5, 5, 0, 255, 0, 255);// Green
+                }
+            }
 
-			if (enemyTeam != localTeam)
-			{
-				if (pos.z - LocalPlayerPos.z > 75){
-					FillRGB(x_1, y_1, 5, 5, 255, 255, 0, 255); // Yellow
-				}
-				else if (pos.z - LocalPlayerPos.z < -75){
-					FillRGB(x_1, y_1, 5, 5, 255, 111, 0, 255);// Orange
-				}
-				else{
-					FillRGB(x_1, y_1, 5, 5, 255, 0, 0, 255); // Red
-				}
-			}
-                   return 0;
-		}
-      
+            if (enemyTeam != localTeam)
+            {
+                if (pos.z - LocalPlayerPos.z > 75)
+                {
+                    FillRGB(x_1, y_1, 5, 5, 255, 255, 0, 255); // Yellow
+                }
+                else if (pos.z - LocalPlayerPos.z < -75)
+                {
+                    FillRGB(x_1, y_1, 5, 5, 255, 111, 0, 255);// Orange
+                }
+                else
+                {
+                    FillRGB(x_1, y_1, 5, 5, 255, 0, 0, 255); // Red
+                }
+            }
+            return 0;
+        }
 
+        const int fuckingshitoffsetfuck = 8;
         private void dxThread()
         {
             _m.StartProcess();
@@ -591,8 +587,8 @@ namespace DirectOverlay
                 int LocalPlayerHealth = _m.rdInt(LocalPlayer + hOff);
                 int LocalTeam = _m.rdInt(LocalPlayer + teamoff);
                 _vec3 playerPos = GetPlayerPosition();
-		//Recoil crosshair, fuck toggles
-		if (GetAsyncKeyState(0x001) != 0)
+                //Recoil crosshair, fuck toggles
+                if (GetAsyncKeyState(0x001) != 0)
                 {
                     _vec3 punchAngs = _m.rdVector(LocalPlayer + pAngs);
                     int crX = this.Width / 2, crY = this.Height / 2;
@@ -605,10 +601,19 @@ namespace DirectOverlay
                     DrawLine(drX - 6, drY, drX + 6, drY, 1, Color.Red);
                     DrawLine(drX, drY - 6, drX, drY + 6, 1, Color.Red);
                 }
-		
-		
-		//Draw the radar
-                DrawRadar();
+
+
+                //Draw the radar
+                int yOff = this.Height - 600-200;
+                DrawGUIBox(25, yOff + 501, 200, 200, 255, 255, 255, 200, 0, 0, 0, 0);
+                GradientFunc(25, yOff + 500, 200, 200, 10, 10, 80, 250);
+
+                DrawLine(25, yOff + 500, 125, yOff + 600, 100, 100, 100, 255);
+                DrawLine(225, yOff + 500, 125, yOff + 600, 100, 100, 100, 255);
+                DrawLine(125, yOff + 600, 125, yOff + 700, 100, 100, 100, 255);
+                DrawLine(25, yOff + 600, 225, yOff + 600, 100, 100, 100, 255);
+
+                FillRGB(124, yOff + 600, 3, 3, 255, 255, 255, 255);
                 //ViewMatrix Read
                 //Mind you this is terribly inefficient
                 for (int j = 0; j < 16; j++)
@@ -618,7 +623,7 @@ namespace DirectOverlay
                 for (int i = 0; i < 64; i++)
                 {
                     int ent = _m.rdInt(_client + entList + (i * 0x10));
-                    
+
                     if (ent == 0 || ent == LocalPlayer)
                         continue;
                     int entHealth = _m.rdInt(ent + hOff);
@@ -635,7 +640,7 @@ namespace DirectOverlay
                     if (w2scn(entPos, test))
                     {
                         Point pos = new Point((int)W2SNPos.x, (int)W2SNPos.y);
-                        
+
                         Color col;
                         if (entTeam != LocalTeam)
                         {
@@ -660,16 +665,16 @@ namespace DirectOverlay
                                 DrawLine(pos.X + (height / 4), headPosy, pos.X + (height / 4), pos.Y, 1, col);
                                 DrawLine(pos.X - (height / 4), headPosy, pos.X + (height / 4), headPosy, 1, col);
                                 DrawLine(pos.X - (height / 4), pos.Y, pos.X + (height / 4), pos.Y, 1, col);
-                                
+
                                 //Line
                                 //DrawLine(pos.X, headPosy, pos.X, pos.Y,1, col);
 
                             }
                         }
                     }
-                    
+
                 }
-                
+
 
                 int TextX = 15;
 
@@ -680,7 +685,7 @@ namespace DirectOverlay
                 //Little lines to look cool and shit
                 DrawLine(250, 0, 250, 20, 1, Color.DeepSkyBlue);
                 DrawLine(0, 20, 250, 20, 1, Color.DeepSkyBlue);
-                       
+
                 s.Stop();
                 //See how long that shit took
                 _ShadowText("" + s.ElapsedMilliseconds + "ms", new Point(220, 0), Color.DeepSkyBlue);
