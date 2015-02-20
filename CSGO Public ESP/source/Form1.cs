@@ -294,9 +294,8 @@ namespace DirectOverlay
         }
         #endregion
         public static bool esp = true;
-        public static bool radarOn = true;
-        const int pBaseOff = 0xA6B91C;
-        const int entList = 0x4A0E014;
+        const int pBaseOff = 0xA6C90C;
+        const int entList = 0x4A0F014;
         float[] ViewMatrix = new float[16];
         _vec3 W2SNPos = new _vec3();
         const int teamoff = 0xF0;
@@ -373,7 +372,7 @@ namespace DirectOverlay
         {
             int vkCode = Marshal.ReadInt32(lParam);
             bool ValidKeyDown = false;
-            if (vkCode == Keys.Insert.GetHashCode() || vkCode == Keys.Home.GetHashCode())
+            if (vkCode == Keys.Insert.GetHashCode())
                 ValidKeyDown = true;
             if (code >= 0 && wParam == (IntPtr)WM_KEYDOWN && ValidKeyDown)
             {
@@ -381,13 +380,8 @@ namespace DirectOverlay
                 {
                     esp = !esp;
                 }
-                if (vkCode == Keys.Home.GetHashCode())
-                {
-                    radarOn = !radarOn;
-                }
                 return (IntPtr)1;
             }
-
             else
                 return CallNextHookEx(hhook, code, (int)wParam, lParam);
         }
@@ -612,22 +606,20 @@ namespace DirectOverlay
                 //Draw the radar
                
                 int yOff = this.Height - 600-200;
-                if (radarOn)
-                {
-                    DrawGUIBox(25, yOff + 501, 200, 200, 255, 255, 255, 200, 0, 0, 0, 0);
-                    //GradientFunc(25, yOff + 500, 200, 200, 10, 10, 80, 250);
-                    FillRGB(25, yOff + 500, 200, 200, 90, 90, 90, 255);
-                    DrawLine(25, yOff + 500, 125, yOff + 600, 150, 150, 150, 255);
-                    DrawLine(225, yOff + 500, 125, yOff + 600, 150, 150, 150, 255);
-                    DrawLine(125, yOff + 600, 125, yOff + 700, 150, 150, 150, 255);
-                    DrawLine(25, yOff + 600, 225, yOff + 600, 150, 150, 150, 255);
+                DrawGUIBox(25, yOff + 501, 200, 200, 255, 255, 255, 200, 0, 0, 0, 0);
+                //GradientFunc(25, yOff + 500, 200, 200, 10, 10, 80, 250);
+                FillRGB(25, yOff + 500, 200, 200, 90, 90, 90, 255);
+                DrawLine(25, yOff + 500, 125, yOff + 600, 150, 150, 150, 255);
+                DrawLine(225, yOff + 500, 125, yOff + 600, 150, 150, 150, 255);
+                DrawLine(125, yOff + 600, 125, yOff + 700, 150, 150, 150, 255);
+                DrawLine(25, yOff + 600, 225, yOff + 600, 150, 150, 150, 255);
 
-                    FillRGB(124, yOff + 600, 3, 3, 255, 255, 255, 255);
-                }
+                FillRGB(124, yOff + 600, 3, 3, 255, 255, 255, 255);
+                
                 //ViewMatrix Read
                 //Mind you this is terribly inefficient
                 for (int j = 0; j < 16; j++)
-                    ViewMatrix[j] = _m.rdFloat(_client + 0x4A03564 + (j * 0x4));
+                    ViewMatrix[j] = _m.rdFloat(_client + 0x4A04564 + (j * 0x4));
 
                 //Entity Loop
                 for (int i = 0; i < 64; i++)
@@ -644,8 +636,7 @@ namespace DirectOverlay
                     _vec3 test = new _vec3();
 
                     //Draw them on the Radar
-                    if(radarOn)
-                        EnemyPosToRadar(entPos, ent, yOff);
+                    EnemyPosToRadar(entPos, ent, yOff);
                     //Radar Done
 
                     if (w2scn(entPos, test))
